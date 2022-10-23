@@ -1,0 +1,21 @@
+ul.paginate {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	top: 9rem;
+}
+
+ul.paginate li {
+	display: inline;
+}
+
+ul.paginate li a {
+	color: black;
+	float: left;
+	padding: 8px 16px;
+	text-decoration: none;
+}
+
+ul.paginate li a:hover:not(.active) {
+	background-color: rgb(156, 51, 51);
+}

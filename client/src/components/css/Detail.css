@@ -1,0 +1,40 @@
+.contenedor-detail {
+	height: 100%;
+}
+
+.div-container {
+	background-color: cornflowerblue;
+	display: flex;
+	height: 100vh;
+	flex-flow: row wrap;
+	margin: 0 2em;
+	padding: 2em;
+	border: 1px solid black;
+}
+.img-detail {
+	background-color: burlywood;
+	display: flex;
+	padding: 2em;
+	width: 50%;
+	border: 1px solid black;
+}
+.img-detail img {
+	height: auto;
+	width: 100%;
+}
+
+.div-details {
+	background-color: aquamarine;
+	display: flex;
+	width: 50%;
+	padding: 2em;
+	flex-flow: column wrap;
+	border: 1px solid black;
+}
+
+.div-loading-parent {
+	display: flex;
+	align-items: center;
+	height: 100%;
+	justify-content: center;
+}

@@ -1,0 +1,21 @@
+.card {
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+	border-radius: 5px;
+	color: black;
+}
+
+.imageCard {
+	height: 10rem;
+	width: 70%;
+	margin: 0 auto;
+}
+
+.grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	grid-template-rows: repeat(3, 1fr);
+	justify-content: center;
+	text-align: center;
+	grid-column-gap: 20px;
+	grid-row-gap: 20px;
+}
