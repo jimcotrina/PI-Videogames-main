@@ -65,7 +65,7 @@ export default function Home() {
 				<div className='copyright'>
 					&copy; 2022 Diseño y desarrollo por{' '}
 					<a href='https://github.com/jimcotrina' target='_blank'>
-						Jimmy Cotrina Ch.
+						Jimmy Cotrina C.
 					</a>
 				</div>
 			</footer>
