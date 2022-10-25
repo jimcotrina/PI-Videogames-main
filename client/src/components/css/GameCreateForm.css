@@ -1,0 +1,30 @@
+.div-container-Form {
+	height: 100%;
+	margin: 2em;
+}
+
+label {
+	font-size: 1.2em bold;
+	color: aquamarine;
+	margin: 1em;
+	background-color: black;
+}
+
+.div-form {
+	display: flex;
+	margin: 2em;
+	align-items: center;
+}
+
+.select-platforms {
+	display: flex;
+	margin: 2em;
+	align-items: center;
+}
+
+.select-genres {
+	display: flex;
+	align-items: center;
+	flex-direction: row;
+	margin: 2em;
+}

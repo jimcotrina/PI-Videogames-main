@@ -8,6 +8,7 @@ import {
 	ORDER_BY_NAME,
 	ORDER_BY_RATING,
 	FILTER_GENRES,
+	FILTER_CREATED,
 	ERROR,
 } from './actions';
 
@@ -52,13 +53,18 @@ export default function rootReducer(state = initialState, action) {
 				...state,
 			};
 		case FILTER_GENRES:
-			const filterGames = state.allGames;
-			const filterGenres = filterGames.filter((e) => {
-				return e.genres?.includes(action.payload);
-			});
+			const gamesByGenres = action.payload;
+			state.games = state.allGames.filter((videogames) =>
+				videogames.genres?.includes(gamesByGenres)
+			);
+			if (action.payload === 'all') state.games = state.allGames;
+			if (state.games.length === 0) {
+				alert('videogames not found!!');
+				state.games = state.allGames;
+			}
 			return {
 				...state,
-				games: action.payload === 'All genres' ? filterGames : filterGenres,
+				games: state.games,
 			};
 		case ORDER_BY_NAME:
 			let sortedArr =
@@ -85,11 +91,50 @@ export default function rootReducer(state = initialState, action) {
 				...state,
 				games: sortedArr,
 			};
+		case ORDER_BY_RATING:
+			let sortedArr2 =
+				action.payload === 'L-H'
+					? state.games.sort(function (a, b) {
+							if (a.rating > b.rating) {
+								return 1;
+							}
+							if (b.rating > a.rating) {
+								return -1;
+							}
+							return 0;
+					  })
+					: state.games.sort(function (a, b) {
+							if (a.rating > b.rating) {
+								return -1;
+							}
+							if (b.rating > a.rating) {
+								return 1;
+							}
+							return 0;
+					  });
+			return {
+				...state,
+				games: sortedArr2,
+			};
 		case PAGE_DETAIL:
 			return {
 				...state,
 				detail: action.payload,
 			};
+		case FILTER_CREATED:
+			const createdFilter =
+				action.payload === 'db'
+					? state.allGames.filter((e) => e.createdInDb)
+					: state.allGames.filter((e) => !e.createdInDb);
+			return {
+				...state,
+				games: action.payload === 'origin' ? state.allGames : createdFilter,
+			};
+		/* case 'CLEAR':
+			return {
+				...state,
+				gameDetail: action.payload,
+			}; */
 
 		default:
 			return { ...state };

@@ -1,28 +1,39 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import { postGame, getGenres } from '../redux/actions';
+import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import './css/Form.css';
+import { postGame, getGenres } from '../redux/actions';
+import './css/GameCreateForm.css';
+import Title from './Title';
+import Footer from './Footer';
 
 export default function GameCreateForm() {
 	const dispatch = useDispatch();
 	const history = useHistory();
-	const genres = useSelector((store) => store.genres);
+	const genres = useSelector((state) => state.genres);
 	const [errors, setErrors] = useState({});
 
 	const [input, setInput] = useState({
 		name: '',
 		description: '',
-		rating: 0,
 		image: '',
+		released: '',
+		rating: 0,
+		platforms: [],
 		genres: [],
 	});
 
+	useEffect(() => {
+		dispatch(getGenres());
+	}, []);
+
 	const validate = (input) => {
 		const errors = {};
-		if (!input.name.length) errors.name = 'THE NAME IS MISSING!!';
-		if (!input.rating.length) errors.rating = 'THE NAME IS MISSING!!';
-		if (!input.description.length) errors.description = 'THE NAME IS MISSING!!';
+		if (!input.name.length) errors.name = 'Name is required!!';
+		if (!input.description.length) errors.description = 'Description is required!!';
+		if (!input.rating.length) errors.rating = 'rating is required!!';
+		if (!input.genres[0]) {
+			errors.genres = 'Minimun one Genre is required ';
+		}
 		return errors;
 	};
 
@@ -40,118 +51,177 @@ export default function GameCreateForm() {
 		console.log(input);
 	};
 
-	function handlePlatforms(e) {
+	const handlePlatforms = (e) => {
 		setInput({
 			...input,
 			platforms: [e.target.value],
 		});
-	}
+	};
 
-	const handleSelect = (e) => {
+	const handleSelectGenres = (e) => {
+		if (!input.genres.includes(e.target.value)) {
+			setInput({
+				...input,
+				genres: [...input.genres, e.target.value],
+			});
+			setErrors(
+				validate({
+					...input,
+					genres: [...input.genres, e.target.value],
+				})
+			);
+		} else {
+			setInput({
+				...input,
+			});
+		}
+	};
+
+	const handleDeleteGenres = (e) => {
 		setInput({
 			...input,
-			genres: [...input.genres, e.target.value],
+			genres: input.genres.filter((param) => param !== e),
 		});
-		if (input.genres) {
-		}
 	};
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-
-		dispatch(postGame(input));
-		console.log({ ...input });
-		alert('SUCCESSFULLY CREATED GAME!!');
+		const newGame = {
+			name: input.name,
+			description: input.description,
+			image: input.image,
+			released: input.released,
+			rating: input.rating,
+			platforms: input.platforms.join(', '),
+			genres: input.genres.join(', '),
+		};
+		dispatch(postGame(newGame));
 		setInput({
 			name: '',
-			image: '',
 			description: '',
+			image: '',
+			released: '',
 			rating: 0,
+			platforms: [],
 			genres: [],
 		});
+		alert('SUCCESSFULLY CREATED VIDEOGAME!!');
 		history.push('/home');
 	};
 
-	useEffect(() => {
-		dispatch(getGenres());
-	}, []);
-
 	return (
 		<div>
-			<Link to='/home'>
-				<button>BACK</button>
-			</Link>
-			<h1>CREATE GAME</h1>
-			<div className='div-container'>
+			<Title />
+			<div className='div-container-Form'>
 				<form onSubmit={(e) => handleSubmit(e)}>
-					<div className='input-div'>
-						<label className='title-form'>TITLE:</label>
+					<div className='div-form'>
+						<label>Videogame Name: </label>
 						<input
-							className='input-form'
-							placeholder='game name'
 							type='text'
+							placeholder='videogame'
 							value={input.name}
 							name='name'
 							onChange={(e) => handleChangue(e)}
 						/>
 						{errors.name && <p className='error'>{errors.name}</p>}
 					</div>
-					<div className='input-div'>
-						<label className='title-form'>RATING:</label>
-						<h4>{input.rating}</h4>
-						<input
-							className='input-form'
-							type='range'
-							min='0'
-							max='100'
-							name='rating'
-							onChange={(e) => handleChangue(e)}
-							value={input.rating}
-						/>
-						{errors.rating && <p className='error'>{errors.rating}</p>}
-					</div>
-					<div className='input-div'>
-						<label className='title-form'>DESCRIPTION:</label>
+					<div className='div-form'>
+						<label>Description: </label>
 						<textarea
-							className='input-form'
-							placeholder='description'
 							type='text'
+							placeholder='description'
 							value={input.description}
 							name='description'
 							onChange={(e) => handleChangue(e)}
 						/>
 						{errors.description && <p className='error'>{errors.description}</p>}
 					</div>
-					<div className='input-div'>
-						<label className='title-form'>PLATFORMS:</label>
-						<textarea
-							className='input-form'
-							placeholder='platforms'
+					<div className='div-form'>
+						<label>Image: </label>
+						<input
+							type='url'
+							placeholder='https://example.com'
+							value={input.image}
+							name='image'
+							onChange={(e) => handleChangue(e)}
+						/>
+						{errors.image && <p className='error'>{errors.image}</p>}
+					</div>
+					<div className='div-form'>
+						<label>Released: </label>
+						<input
+							placeholder='released'
+							type='date'
+							min='1970-01-01'
+							max='2026-12-30'
+							value={input.released}
+							name='released'
+							onChange={(e) => handleChangue(e)}
+						/>
+						{errors.released && <p className='error'>{errors.released}</p>}
+					</div>
+					<div className='div-form'>
+						<label>Rating: </label>
+						<input
+							type='number'
+							step='0.1'
+							min='0'
+							max='5'
+							name='rating'
+							onChange={(e) => handleChangue(e)}
+							value={input.rating}
+						/>
+						{errors.rating && <p className='error'>{errors.rating}</p>}
+					</div>
+					<div className='select-platforms'>
+						<label>Platforms: </label>
+						<input
 							type='text'
+							placeholder='platforms'
 							value={input.platforms}
 							name='platforms'
 							onChange={(e) => handlePlatforms(e)}
 						/>
-						{errors.steps && <p className='error'>{errors.steps}</p>}
+						{errors.platforms && <p className='error'>{errors.platforms}</p>}
 					</div>
-					<div className='input-div'>
+					<div className='select-genres'>
+						<label>Genres: </label>
+						<select onChange={(e) => handleSelectGenres(e)}>
+							<option value='all' disabled selected hidden>
+								All
+							</option>
+							{genres?.map((e) => {
+								return (
+									<option key={e.id} value={e.name}>
+										{e.name}
+									</option>
+								);
+							})}
+						</select>
+						{errors.genres && <span>{errors.genres}</span>}
 						<div>
-							<label className='title-form'>Genres:</label>
-							<select onChange={(e) => handleSelect(e)}>
-								{genres.map((d) => (
-									<option value={d.name}>{d.name}</option>
-								))}
-							</select>
-						</div>
-						<div>
-							<ul>
-								<li>{input.genres.map((el) => el + ' ,')}</li>
-							</ul>
+							{input.genres?.map((e) => {
+								return (
+									<>
+										<div>{e}</div>
+										<button onClick={() => handleDeleteGenres(e)}>X</button>
+									</>
+								);
+							})}{' '}
 						</div>
 					</div>
-					{<button type='submit'>CREATE</button>}
+					{Object.keys(errors).length ? (
+						<div>
+							<input type='submit' disabled name='Send' />
+						</div>
+					) : (
+						<div>
+							<input type='submit' name='Send' />
+						</div>
+					)}
 				</form>
 			</div>
+			<Footer />
 		</div>
 	);
 }

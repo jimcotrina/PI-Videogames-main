@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getDetails, pageDetail } from '../redux/actions';
 import Loader from './Loader';
 import './css/Detail.css';
+import Footer from './Footer';
+import Title from './Title';
 
 export default function Detail(props) {
 	const dispatch = useDispatch();
@@ -18,6 +20,7 @@ export default function Detail(props) {
 
 	return (
 		<div className='contenedor-detail'>
+			<Title />
 			{Object.keys(myGame).length ? (
 				<div className='div-container'>
 					<div className='img-detail'>
@@ -29,17 +32,15 @@ export default function Detail(props) {
 						<p>Rating: {myGame.rating}</p>
 						<p>Released: {myGame.released}</p>
 					</div>
-					<h1>{myGame.name}</h1>
-					<p>{myGame.description}</p>
-					<Link to='/home'>
-						<button>BACK</button>
-					</Link>
+					<h1 className='name-detail'>{myGame.name}</h1>
+					<p className='p-detail'>{myGame.description}</p>
 				</div>
 			) : (
 				<div className='div-loading-parent'>
 					<Loader />
 				</div>
 			)}
+			<Footer />
 		</div>
 	);
 }

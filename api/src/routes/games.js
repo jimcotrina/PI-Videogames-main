@@ -10,9 +10,9 @@ router.get('/', async (req, res) => {
 		let gamesTotal = await getAllGames();
 		//query name
 		if (name) {
-			let gameName = gamesTotal.filter((e) =>
-				e.name.toLowerCase().includes(name.toLowerCase())
-			);
+			let gameName = gamesTotal
+				.filter((e) => e.name.toLowerCase().includes(name.toLowerCase()))
+				.slice(0, 15);
 			gameName.length
 				? res.status(200).send(gameName)
 				: res.status(404).send('Game not found!!');
@@ -48,5 +48,3 @@ router.post('/', async (req, res) => {
 });
 
 module.exports = router;
-
-

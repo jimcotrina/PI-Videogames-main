@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllGames } from '../redux/actions';
 import { Link } from 'react-router-dom';
+import { getAllGames } from '../redux/actions';
+import './css/Home.css';
 import Card from './Card';
 import NavBar from './NavBar';
 import Filters from './Filters';
 import Paginate from './Paginate';
 import Loader from './Loader';
-import './css/Home.css';
+import Footer from './Footer';
 
 export default function Home() {
 	const dispatch = useDispatch();
 	const allGames = useSelector((state) => state.games);
 
+	const [orden, setOrden] = useState('');
 	const [currentPage, setCurrentPage] = useState(1);
 	const [gamesPerPage, setGamesPerPage] = useState(15);
 	const indexOfLastGame = currentPage * gamesPerPage; //15
@@ -31,28 +33,24 @@ export default function Home() {
 		<div className='all'>
 			<div className='header-bar'>
 				<NavBar />
-				<Filters />
-				<Paginate
-					gamesPerPage={gamesPerPage}
-					allGames={allGames.length}
-					pages={pages}
-				/>{' '}
+				{currentGames.length > 0 ? (
+					<Filters setCurrentPage={setCurrentPage} setOrden={setOrden}></Filters>
+				) : null}
+				<Paginate gamesPerPage={gamesPerPage} allGames={allGames.length} pages={pages} />
 			</div>
 			<div className='grid container-card'>
 				{currentGames.length ? (
 					currentGames?.map((el) => {
 						return (
-							<div>
-								<Link to={'/detail/' + el.id}>
-									<Card
-										key={el.id}
-										name={el.name}
-										image={el.image}
-										rating={el.rating}
-										genres={el.genres}
-									/>
-								</Link>
-							</div>
+							<Link to={'/detail/' + el.id}>
+								<Card
+									key={el.id}
+									name={el.name}
+									image={el.image}
+									rating={el.rating}
+									genres={el.genres}
+								/>
+							</Link>
 						);
 					})
 				) : (
@@ -61,14 +59,7 @@ export default function Home() {
 					</div>
 				)}
 			</div>
-			<footer>
-				<div className='copyright'>
-					&copy; 2022 Diseño y desarrollo por{' '}
-					<a href='https://github.com/jimcotrina' target='_blank'>
-						Jimmy Cotrina C.
-					</a>
-				</div>
-			</footer>
+			<Footer />
 		</div>
 	);
 }

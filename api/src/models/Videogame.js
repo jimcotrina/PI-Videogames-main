@@ -18,7 +18,6 @@ module.exports = (sequelize) => {
 			},
 			image: {
 				type: DataTypes.STRING,
-				allowNull: false,
 				validate: {
 					isUrl: {
 						msg: 'url format: https://foo.com',
@@ -45,8 +44,7 @@ module.exports = (sequelize) => {
 				},
 			},
 			platforms: {
-				type: DataTypes.ARRAY(DataTypes.STRING),
-				allowNull: false,
+				type: DataTypes.STRING,
 			},
 			createdInDb: {
 				type: DataTypes.BOOLEAN,

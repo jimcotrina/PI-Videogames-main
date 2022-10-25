@@ -10,7 +10,7 @@ export default function NavBar() {
 				<h1>HENRY VIDEOGAMES</h1>
 			</div>
 			<div className='createGame'>
-				<Link to='/videogame'>
+				<Link to='/create'>
 					<a>CREATE VIDEOGAME</a>
 				</Link>
 			</div>

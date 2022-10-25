@@ -9,6 +9,7 @@ export const POST_GAME = 'POST_GAME';
 export const ORDER_BY_NAME = 'ORDER_BY_NAME';
 export const ORDER_BY_RATING = 'ORDER_BY_RATING';
 export const FILTER_GENRES = 'FILTER_GENRES';
+export const FILTER_CREATED = 'FILTER_CREATED';
 export const ERROR = 'ERROR';
 
 export const getAllGames = () => {
@@ -124,6 +125,13 @@ export const orderByRating = (payload) => {
 export const filterGenres = (payload) => {
 	return {
 		type: FILTER_GENRES,
+		payload,
+	};
+};
+
+export const filterCreated = (payload) => {
+	return {
+		type: FILTER_CREATED,
 		payload,
 	};
 };

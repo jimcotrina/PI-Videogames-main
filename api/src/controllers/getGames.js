@@ -13,12 +13,9 @@ const getApiInfo = async () => {
 					id: e.id,
 					name: e.name,
 					image: e.background_image,
-					//description: e.slug,
-					released: e.released,
 					rating: e.rating,
-					platforms: e.platforms.map((e) => e.platform.name).join(', '),
-					createInDb: e.tba,
-					genres: e.genres.map((e) => e.name) /* .join(', ') */,
+					genres: e.genres.map((e) => e.name),
+					createdInDb: false,
 				});
 			});
 		}
@@ -39,7 +36,18 @@ const getInfoDB = async () => {
 				},
 			},
 		});
-		return dbData;
+		const dBGames = dbData.map((g) => {
+			let gameDB = {
+				id: g.id,
+				name: g.name[0].toUpperCase() + g.name.substring(1),
+				image: g.image,
+				rating: g.rating,
+				genres: g.genres.map((genre) => genre.name),
+				createdInDb: g.createdInDb,
+			};
+			return gameDB;
+		});
+		return dBGames;
 	} catch (error) {
 		console.log({ error: error.message });
 	}
