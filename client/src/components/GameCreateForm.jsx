@@ -42,21 +42,21 @@ export default function GameCreateForm() {
 			...input,
 			[e.target.name]: e.target.value,
 		});
-		setErrors(
+		/* 	setErrors(
 			validate({
 				...input,
 				[e.target.name]: e.target.value,
 			})
-		);
+		); */
 		console.log(input);
 	};
 
-	const handlePlatforms = (e) => {
+	/* 	const handlePlatforms = (e) => {
 		setInput({
 			...input,
 			platforms: [e.target.value],
 		});
-	};
+	}; */
 
 	const handleSelectGenres = (e) => {
 		if (!input.genres.includes(e.target.value)) {
@@ -114,6 +114,7 @@ export default function GameCreateForm() {
 			<Title />
 			<div className='div-container-Form'>
 				<form onSubmit={(e) => handleSubmit(e)}>
+					<h1>Videogame Form</h1>
 					<div className='div-form'>
 						<label>Videogame Name: </label>
 						<input
@@ -168,8 +169,8 @@ export default function GameCreateForm() {
 							min='0'
 							max='5'
 							name='rating'
-							onChange={(e) => handleChangue(e)}
 							value={input.rating}
+							onChange={(e) => handleChangue(e)}
 						/>
 						{errors.rating && <p className='error'>{errors.rating}</p>}
 					</div>
@@ -180,7 +181,7 @@ export default function GameCreateForm() {
 							placeholder='platforms'
 							value={input.platforms}
 							name='platforms'
-							onChange={(e) => handlePlatforms(e)}
+							onChange={(e) => handleChangue(e)}
 						/>
 						{errors.platforms && <p className='error'>{errors.platforms}</p>}
 					</div>

@@ -16,4 +16,5 @@ router.use('/videogames', games);
 router.use('/videogame', gameDetail);
 router.use('/genres', genres);
 router.use('*', error);
+
 module.exports = router;
